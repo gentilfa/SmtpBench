@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html ng-app="MainApp">
+<head>
+<meta charset="ISO-8859-1">
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/underscore.js"></script>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/angular.js"></script>
+<script type="text/javascript" src="js/restangular.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/pace.js"></script>
+<title>SmtpBench</title>
+</head>
+<body ng-controller="MainController">
+<h2 style="text-align: center;margin-bottom: 3%;">SmtpBecnh</h2>
+
+	<div style="text-align: center; color:red;">{{view.errorMsg}}</div>
+	<div style="width: 90%;margin: 0 auto;">
+		<form class="form-horizontal" ng-submit="executeBench()">
+			<div class="form-group">
+				<div class="row">
+					<label class="col-md-1 control-label" for="hosr">Host</label>
+					<div class="col-md-2">
+						<input id="host" name="host" type="text" ng-model="view.host" class="form-control input-md" required>
+					</div>
+					<label class="col-md-1 control-label" for="password">Port</label>
+					<div class="col-md-2">
+						<input id="port" name="port" ng-model="view.port" type="number" class="form-control input-md" required>
+					</div>
+					<label class="col-md-1 control-label" for="password">SSLPort</label>
+					<div class="col-md-2">
+						<input id="port" name="port" ng-model="view.portSSL" type="number" class="form-control input-md" required>
+					</div>
+				</div>
+			</div>
+	
+			<div class="form-group">
+				<div class="row">
+					<label class="col-md-1 control-label" for="user">User</label>
+					<div class="col-md-3">
+						<input id="user" name="user" type="text" ng-model="view.user" class="form-control input-md" required>
+					</div>
+					<label class="col-md-1 control-label" for="password">Password</label>
+					<div class="col-md-3">
+						<input id="password" name="password" ng-model="view.pass" type="password" class="form-control input-md" required>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="row">
+					<label class="col-md-1 control-label" for="fromMain">From</label>
+					<div class="col-md-3">
+						<input id="fromMain" name="fromMain" type="text" ng-model="view.mailFrom" class="form-control input-md" required>
+					</div>
+					<label class="col-md-1 control-label" for="toMain">To</label>
+					<div class="col-md-3">
+						<input id="toMain" name="toMain" type="text" ng-model="view.mailTo" class="form-control input-md" required>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="row">
+					<label class="col-md-1 control-label" for="numMess">N. Messages</label>
+					<div class="col-md-3">
+						<input id="numMess" name="numMess" type="number" min="1" ng-model="view.numMess" class="form-control input-md" required>
+					</div>
+					<label class="col-md-1 control-label" for="sizeMessages">Size 1</label>
+					<div class="col-md-1">
+						<div class="input-group">
+							<input id="sizeMessages" name="sizeMessages" class="form-control" ng-model="view.sizeMessage1" type="number" min="1" required>
+						</div>
+					</div>
+					<label class="col-md-1 control-label" for="sizeMessages"  ng-show="view.numMess == 1">Size 2</label>
+					<div class="col-md-1"  ng-show="view.numMess == 1">
+						<div class="input-group">
+							<input id="sizeMessages" name="sizeMessages" class="form-control" ng-model="view.sizeMessage2" type="number" min="1">
+						</div>
+					</div>
+					<label class="col-md-1 control-label" for="sizeMessages"  ng-show="view.numMess == 1">Size 3</label>
+					<div class="col-md-1"  ng-show="view.numMess == 1">
+						<div class="input-group">
+							<input id="sizeMessages" name="sizeMessages" class="form-control" ng-model="view.sizeMessage3" type="number" min="1">
+						</div>
+					</div>
+					<label class="col-md-1 control-label">(in Kb)</label>
+				</div>
+			</div>
+			
+	
+			<!-- Text input-->
+			<div class="form-group">
+				<div class="row">
+					<label class="col-md-1 control-label" for="numThread">N. Thread</label>
+					<div class="col-md-3">
+						<input id="numThread" name="numThread" type="number" min="1" ng-model="view.numThread" class="form-control input-md" required>
+					</div>
+					<div class="col-md-4">
+						<button id="" name="" class="btn btn-primary" style="float: right;" ng-disabled="view.isExecute">Exe</button>
+					</div>
+				</div>
+			</div>
+	
+		</form>
+	</div>
+	
+	<h4 ng-show="view.isExecute" style="text-align: center;">Loading...</h4>
+	
+	<div ng-show="view.result">
+		<h4 style="text-align: center;">Result (in second)</h4>
+		<div style="text-align: center;">{{view.mainResult}}</div>
+		<label style="margin-left: 18%;">List Message:</label>
+		<ul style="overflow-x: hidden;overflow-y: auto; height: 200px; margin-left: 15%;">
+			<li ng-repeat="result in view.resultSingleList" class="row" style="list-style-type: none;">
+		        <div class="col-xs-12">Message #{{$index}} - Time Delivery: {{result.timeOperation}} - Time Create Message: {{result.timeCreateMess}}</div>
+		        <br/>
+		    </li>
+	    </ul>
+	</div>
+
+</body>
+</html>
